@@ -32,13 +32,25 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+body.menu-open {
+  overflow: hidden;
+}
+
 header {
   padding: 22px 7%;
   border-bottom: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 15px;
+}
+
+.menu-button {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 27px;
+  cursor: pointer;
+  padding: 4px 8px;
 }
 
 .logo {
@@ -54,7 +66,99 @@ header {
 .small {
   font-size: 12px;
   color: var(--muted);
+  margin-left: auto;
 }
+
+/* SEITENMENÜ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 9;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(310px, 85vw);
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  z-index: 10;
+  padding: 25px;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+body.menu-open .sidebar {
+  transform: translateX(0);
+}
+
+body.menu-open .overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.sidebar-title {
+  font-size: 20px;
+  font-weight: 750;
+}
+
+.close-button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  margin-bottom: 7px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: var(--panel2);
+  color: var(--accent);
+}
+
+.nav-icon {
+  width: 23px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+
+/* HAUPTINHALT */
 
 main {
   width: min(750px, 90%);
@@ -116,15 +220,15 @@ h2 {
   line-height: 1.6;
 }
 
+a {
+  color: var(--accent);
+}
+
 footer {
   text-align: center;
   color: var(--muted);
   padding: 35px 15px;
   font-size: 12px;
-}
-
-a {
-  color: var(--accent);
 }
 
 @media (max-width: 500px) {
@@ -146,25 +250,59 @@ a {
 <body>
 
 <header>
+  <button class="menu-button" id="menuButton"
+          aria-label="Menü öffnen"
+          aria-expanded="false">
+    ☰
+  </button>
+
   <div class="logo">Aufgaben<span>.</span></div>
+
   <div class="small">Streitschlichter FKG</div>
 </header>
 
-<div style="text-align:center; padding-top:20px;">
+<!-- SEITENMENÜ -->
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="sidebar" id="sidebar" aria-label="Hauptmenü">
+
+  <div class="sidebar-head">
+    <div class="sidebar-title">
+      Menü<span style="color:#7795ff">.</span>
+    </div>
+
+    <button class="close-button" id="closeButton"
+            aria-label="Menü schließen">
+      ×
+    </button>
+  </div>
+
   <a href="https://streitschlichter-fkg.github.io/Homepage/"
-     style="
-       display:inline-block;
-       background:#222a3a;
-       color:#7795ff;
-       padding:13px 19px;
-       border-radius:10px;
-       text-decoration:none;
-       font-weight:650;
-       border:1px solid #30394c;
-     ">
-    Homepage
+     class="nav-link">
+    <span class="nav-icon">⌂</span>
+    Startseite
   </a>
-</div>
+
+  <a href="https://streitschlichter-fkg.github.io/Aufgaben/"
+     class="nav-link active">
+    <span class="nav-icon">📋</span>
+    Unsere Aufgaben
+  </a>
+
+  <a href="https://streitschlichter-fkg.github.io/Kontakt/"
+     class="nav-link">
+    <span class="nav-icon">✉</span>
+    Kontakt
+  </a>
+
+  <div class="sidebar-footer">
+    Streitschlichter FKG
+  </div>
+
+</nav>
+
+<!-- HAUPTINHALT -->
 
 <main>
 
@@ -199,11 +337,15 @@ a {
 
     <ul>
       <li>Wenn ihr einen Streit habt, den ihr klären wollt, dann kommt gerne auf Frau Berger oder Frau Nawrot zu.</li>
-      <li>Wenn ihr es zeitlich nicht schafft, bei Frau Berger oder Frau Nawrot vorbeizukommen, schreibt uns gerne auf
-  <a href="https://streitschlichter-fkg.github.io/Kontakt" target="_blank">
-    streitschlichter-fkg.github.io/Kontakt
-  </a>
-</li>        
+
+      <li>
+        Wenn ihr es zeitlich nicht schafft, bei Frau Berger oder Frau Nawrot vorbeizukommen, schreibt uns gerne auf
+        <a href="https://streitschlichter-fkg.github.io/Kontakt/"
+           target="_blank"
+           rel="noopener noreferrer">
+          streitschlichter-fkg.github.io/Kontakt
+        </a>
+      </li>
     </ul>
   </section>
 
@@ -212,6 +354,38 @@ a {
 <footer>
   · Streitschlichter FKG · Aufgaben ·
 </footer>
+
+<!-- MENÜ-FUNKTIONEN -->
+
+<script>
+const menuButton = document.getElementById("menuButton");
+const closeButton = document.getElementById("closeButton");
+const overlay = document.getElementById("overlay");
+
+function openMenu() {
+  document.body.classList.add("menu-open");
+  menuButton.setAttribute("aria-expanded", "true");
+}
+
+function closeMenu() {
+  document.body.classList.remove("menu-open");
+  menuButton.setAttribute("aria-expanded", "false");
+}
+
+menuButton.addEventListener("click", openMenu);
+closeButton.addEventListener("click", closeMenu);
+overlay.addEventListener("click", closeMenu);
+
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", closeMenu);
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeMenu();
+  }
+});
+</script>
 
 </body>
 </html>
